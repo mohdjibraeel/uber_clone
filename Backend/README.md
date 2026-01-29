@@ -43,13 +43,12 @@ This endpoint is used to register a new user in the system. It validates the inp
   "email": "johndoe@example.com",
   "password": "password123"
 }
-
+```
 
 ### Responses
 
 #### Success (201 Created)
 Returns the created user (without password) and a JWT for authentication.
-
 
 ```json
 {
@@ -65,4 +64,60 @@ Returns the created user (without password) and a JWT for authentication.
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
+
+---
+
+# User Login Endpoint Documentation
+
+## Endpoint: `/users/login`
+
+### Description
+This endpoint authenticates an existing user using email and password. On successful authentication it returns a JWT for subsequent requests.
+
+---
+
+### HTTP Method
+**POST**
+
+---
+
+### Request Body
+- `email`  
+  - Type: String  
+  - Required: Yes  
+  - Description: The user's email address (must be a valid registered email)
+
+- `password`  
+  - Type: String  
+  - Required: Yes  
+  - Description: The user's password
+
+#### Example Request Body:
+```json
+{
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+```
+
+### Responses
+
+#### Success (200 OK)
+Returns the authenticated user (without password) and a JWT for authentication.
+
+```json
+{
+  "user": {
+    "id": "60f7c2b2e1a4f7001a2b3c4d",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "johndoe@example.com",
+    "lastLogin": "2026-01-29T13:45:00.123Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
 
