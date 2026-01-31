@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [captainData, setCaptainData] = useState({});
+  const [userData, setUserData] = useState({});
   const submitHandler = (e) => {
     e.preventDefault();
-    setCaptainData({ email, password });
-    console.log("Captain Data:", captainData);
+    setUserData({ email, password });
+    console.log("User Data:", userData);
     setEmail("");
     setPassword(""); 
   };
