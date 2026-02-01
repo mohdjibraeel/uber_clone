@@ -68,7 +68,7 @@ const UserLogin = () => {
             Login
           </button>
         </form>
-        <p className="text-center">New Here? <Link to="/register" className="text-[#2f73f2]">Create an account</Link> </p>
+        <p className="text-center">New User? <Link to="/register" className="text-[#2f73f2]">Create an account</Link> </p>
       </div>
       <div>
         <Link to="/captain-login"

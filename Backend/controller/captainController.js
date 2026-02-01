@@ -22,7 +22,7 @@ exports.registerCaptain = async (req, res) => {
       password: hashedPassword,
       vehicle,
     });
-    const token = captain.generateAuthToken();
+    const token =  captain.generateAuthToken();
     res.status(201).json({ captain, token });
   } catch (error) {
     console.error(error);
@@ -56,6 +56,7 @@ exports.loginCaptain = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
     const captain = req.captain;
+    console.log(captain);
     res.status(200).json({ captain });
 };
 

@@ -1,14 +1,25 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState,useContext} from "react";
+import { Link ,useNavigate} from "react-router-dom";
+import {CaptainDataContext} from '../context/CaptainContext';
+import axios from "axios";
+import {ArrowRight} from 'lucide-react';
 
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [captainData, setCaptainData] = useState({});
-  const submitHandler = (e) => {
+  const {captainData, setCaptainData} = useContext(CaptainDataContext);
+  const navigate=useNavigate();
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setCaptainData({ email, password });
-    console.log("Captain Data:", captainData);
+    const captain = { email, password };
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain);
+    if(response.status === 200) {
+      const data = response.data;
+      setCaptainData(data);
+      localStorage.setItem("token", data.token);
+      navigate("/captain-home");
+    }
     setEmail("");
     setPassword("");
   };
@@ -16,11 +27,16 @@ const CaptainLogin = () => {
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
       <div>
-        <img
-          className="h-15 translate-x-[-10%] mb-7"
-          src="https://www.logo.wine/a/logo/Uber/Uber-Logo.wine.svg"
-          alt="logo"
-        />
+        <div className="flex">
+          <img
+            className="h-15 translate-x-[-10%] mb-7"
+            src="https://www.logo.wine/a/logo/Uber/Uber-Logo.wine.svg"
+            alt="logo"
+          />
+          <div className="translate-x-[-60%] translate-y-[20%]">
+            <ArrowRight size={28} strokeWidth={2.7} />
+          </div>
+        </div>
         <form
           action=""
           onSubmit={(e) => {
