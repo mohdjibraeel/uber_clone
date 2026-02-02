@@ -5,7 +5,6 @@ import {UserDataContext} from '../context/UserContext'
 
 const UserProtectWrapper =({ children }) => {
   const token = localStorage.getItem("token");
-  console.log("UserProtectWrapper token:", token);
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(true);
   const { userData, setUserData } = useContext(UserDataContext);
@@ -23,9 +22,8 @@ const UserProtectWrapper =({ children }) => {
       },
     })
     .then((response) => {
-      console.log("axios response:", response);
       if (response.status === 200) {
-        setCaptainData(response.data.captain);
+        setUserData(response.data.user);
         setisLoading(false);
       }
     })
