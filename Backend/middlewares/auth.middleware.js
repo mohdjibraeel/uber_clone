@@ -35,7 +35,6 @@ exports.authUser = async (req, res, next) => {
 };
 
 exports.authCaptain = async (req, res, next) => {
-  console.log("Authorization Header:", req.header.Authorization);
   const token = req.cookies.token || req.header("Authorization")?.split(" ")[1];
   if (!token) {
     return res

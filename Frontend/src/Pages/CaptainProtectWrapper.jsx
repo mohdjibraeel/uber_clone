@@ -5,7 +5,6 @@ import {CaptainDataContext} from '../context/CaptainContext'
 
 const CaptainProtectWrapper =({ children }) => {
   const token = localStorage.getItem("token");
-  console.log("CaptainProtectWrapper token:", token);
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(true);
   const { captainData, setCaptainData } = useContext(CaptainDataContext);
@@ -23,7 +22,6 @@ const CaptainProtectWrapper =({ children }) => {
       },
     })
     .then((response) => {
-      console.log("axios response:", response);
       if (response.status === 200) {
         setCaptainData(response.data.captain);
         setisLoading(false);
