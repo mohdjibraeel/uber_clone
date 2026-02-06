@@ -25,4 +25,5 @@ captainRouter.get('/profile', authCaptain, captainController.getProfile);
 
 captainRouter.get('/logout', authCaptain, captainController.logoutCaptain);
 
+
 module.exports = captainRouter;
