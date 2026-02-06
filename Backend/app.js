@@ -10,6 +10,7 @@ const cookieParser=require('cookie-parser');
 const userRouter=require('./Routes/userRouter');
 const captainRouter=require('./Routes/captainRouter');
 const mapsRouter=require('./Routes/mapsRotuter');
+const rideRouter = require('./Routes/rideRouter');
 
 connectToDB();
 
@@ -28,6 +29,7 @@ app.get('/',(req,res,next)=>{
 app.use('/users',userRouter);    
 app.use('/captains',captainRouter);
 app.use('/maps',mapsRouter);
+app.use('/rides',rideRouter);
 
 
 
