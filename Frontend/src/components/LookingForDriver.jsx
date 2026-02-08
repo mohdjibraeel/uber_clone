@@ -1,6 +1,11 @@
-import React from "react";
-
 const LookingForDriver = (props) => {
+  const nameSetter = (str) => {
+    const index = str.indexOf(",");
+    const firstWord = str.slice(0, index);
+    const remaining = str.slice(index + 1).trim();
+    return [firstWord, remaining];
+  };
+
   return (
     <>
       <h2
@@ -11,19 +16,15 @@ const LookingForDriver = (props) => {
       </h2>
       <h2 className="text-2xl font-semibold mb-2 ">Looking for the Driver</h2>
       <div className="flex items-center text-center justify-center w-full p-3 rounded-xl mb-2">
-        <img
-          className="h-28"
-          src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=956/height=538/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy8yOWZiYjhiMC03NWIxLTRlMmEtODUzMy0zYTM2NGU3MDQyZmEucG5n"
-          alt=""
-        />
+        <img className="h-28" src={props.vehicle.imgUrl} alt="vehicle" />
       </div>
       <div className="w-full border-b flex gap-3 items-center py-3 px-2">
         <div>
           <i className="text-2xl ri-map-pin-user-line"></i>
         </div>
         <div>
-          <h3 className="font-medium text-lg">526/64-A</h3>
-          <p className="text-sm text-gray-700">Gandhinagar Jaipur</p>
+          <h3 className="font-medium text-lg">{nameSetter(props.pickup)[0]}</h3>
+          <p className="text-sm text-gray-700">{nameSetter(props.pickup)[1]}</p>
         </div>
       </div>
       <div className="w-full flex gap-3 items-center py-3 px-2 border-b">
@@ -31,8 +32,12 @@ const LookingForDriver = (props) => {
           <i className="text-2xl ri-map-pin-fill"></i>
         </div>
         <div>
-          <h3 className="font-medium text-lg">H14/64-D</h3>
-          <p className="text-sm text-gray-700">MNIT Jaipur</p>
+          <h3 className="font-medium text-lg">
+            {nameSetter(props.destination)[0]}
+          </h3>
+          <p className="text-sm text-gray-700">
+            {nameSetter(props.destination)[1]}
+          </p>
         </div>
       </div>
       <div className="w-full flex gap-3 items-center py-3 px-2">
@@ -40,12 +45,13 @@ const LookingForDriver = (props) => {
           <i className="text-2xl ri-cash-line"></i>
         </div>
         <div>
-          <h3 className="font-medium text-lg">₹ 193.20</h3>
+          <h3 className="font-medium text-lg">
+            ₹{props.fare[props.vehicle.type]}
+          </h3>
           <p className="text-sm text-gray-700">Payment Cash</p>
         </div>
       </div>
-      <div>
-      </div>
+      <div></div>
     </>
   );
 };

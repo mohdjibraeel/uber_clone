@@ -1,22 +1,18 @@
-import React from "react";
 
 const LocationSearchPanel = (props) => { 
-  // Sample location array 
-  const location = [ 
-    'Aurobindo hostel, Mnit, JLN marg, Jaipur, Rajasthan',
-    'Vinodini hostel, Mnit, JLN marg, Jaipur, Rajasthan',
-    'Varun hostel, Mnit, JLN marg, Jaipur, Rajasthan',
-    'Drona hostel, Mnit, JLN marg, Jaipur, Rajasthan'
-  ]
+  const locations = props.suggestions|| [];
   return (
     <div>
-      {location.map((elem,idx)=>{
+      {locations.map((elem,idx)=>{
         return <div key={idx} onClick={()=>{
-          props.setVehiclePanelOpen(true)
-          props.setPanelOpen(false)
+          if(props.activeField==='pickup'){
+            props.setPickup(elem.description)
+          }else{
+            props.setDestination(elem.description)
+          }
         }} className="flex items-center justify-start mb-2 px-1 gap-2 border rounded-2xl border-gray-400 active:border-black p-3">
         <h2 className="bg-gray-200 h-7.5 w-7 rounded-full ml-2 items-center flex justify-center"><i className=" text-lg ri-map-pin-fill"></i></h2>
-        <h4 className="font-medium"> {elem}</h4>
+        <h4 className="font-medium"> {elem.description}</h4>
       </div>
       })
       }

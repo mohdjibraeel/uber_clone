@@ -5,6 +5,7 @@ const VehiclePanel = (props) => {
     <h2 onClick={() => props.setVehiclePanelOpen(false)}className="absolute right-5.5 "><i className="text-2xl font-bold ri-arrow-down-wide-line"></i></h2>
     <h2 className="text-2xl font-semibold mb-6">Choose a Vehicle</h2>
         <div onClick={()=>{
+          props.setVehicle({type:"car",imgUrl:"https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=956/height=538/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy8yOWZiYjhiMC03NWIxLTRlMmEtODUzMy0zYTM2NGU3MDQyZmEucG5n"})
           props.setConfirmVehiclePanelOpen(true)
           props.setVehiclePanelOpen(false)
         }} className="flex items-center justify-between w-full p-3 border-2 active:border-black border-gray-300 rounded-xl mb-2">
@@ -24,10 +25,11 @@ const VehiclePanel = (props) => {
             <p className="text-xs text-gray-600">Afforadable compact rides</p>
           </div>
           <div>
-            <h2 className="text-lg font-bold ">₹193.20 </h2>
+            <h2 className="text-lg font-bold ">₹{props.fare?.car?? "--"}</h2>
           </div>
         </div>
         <div onClick={()=>{
+          props.setVehicle({type:"moto",imgUrl:"https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=368/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy8yYzdmYTE5NC1jOTU0LTQ5YjItOWM2ZC1hM2I4NjAxMzcwZjUucG5n"})
           props.setConfirmVehiclePanelOpen(true)
           props.setVehiclePanelOpen(false)
         }} className="flex items-center justify-between w-full p-3 border-2 active:border-black border-gray-300 rounded-xl mb-2">
@@ -47,10 +49,11 @@ const VehiclePanel = (props) => {
             <p className="text-xs text-gray-600">Afforadable Moto rides</p>
           </div>
           <div>
-            <h2 className="text-lg font-bold ">₹69 </h2>
+            <h2 className="text-lg font-bold ">₹{props.fare?.moto??'--'} </h2>
           </div>
         </div>
         <div onClick={()=>{
+          props.setVehicle({type:"auto",imgUrl:"https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=368/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy8xZGRiOGM1Ni0wMjA0LTRjZTQtODFjZS01NmExMWEwN2ZlOTgucG5n"})
           props.setConfirmVehiclePanelOpen(true)
           props.setVehiclePanelOpen(false)
         }} className="flex items-center justify-between w-full p-3 border-2 active:border-black border-gray-300 rounded-xl mb-2">
@@ -70,7 +73,7 @@ const VehiclePanel = (props) => {
             <p className="text-xs text-gray-600">Afforadable auto rides</p>
           </div>
           <div>
-            <h2 className="text-lg font-bold ">₹118.6 </h2>
+            <h2 className="text-lg font-bold ">₹{props.fare?.auto??'--'}</h2>
           </div>
         </div>
     </>
