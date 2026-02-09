@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useContext} from "react";
 import { Link } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -8,7 +8,11 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfirmVehicle from "../components/ConfirmVehicle";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
+import {SocketContext} from "../context/SocketContext";
 import axios from "axios";
+import { useEffect } from "react";
+import { User } from "lucide-react";
+import { UserDataContext } from "../context/UserContext";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -25,12 +29,20 @@ const Home = () => {
   const [vehicle, setVehicle] = useState({});
   const [activeField, setActiveField] = useState(null);
   const [waitingForDriver, setWaitingForDriver] = useState(false);
-  const [lookingforDriverPanelOpen, setLookingforDriverPanelOpen] =
-    useState(false);
+  const [lookingforDriverPanelOpen, setLookingforDriverPanelOpen] = useState(false);
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
   const [pickUpSuggestions, setpickUpSuggetions] = useState("");
   const [destinationSuggestions, setdestinationSuggestions] = useState("");
   const [fare, setFare] = useState({ car: null, auto: null, moto: null });
+
+  const {socket} =useContext(SocketContext);
+  const {userData}=useContext(UserDataContext);
+
+  useEffect(() => {
+    socket.emit("join",{userType:"user",userId:userData._id})
+    
+  }, [userData])
+  
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -52,7 +64,6 @@ const Home = () => {
           },
         },
       );
-      console.log(response.data);
       setpickUpSuggetions(response.data);
     } catch (err) {
       console.log("Error while finding suggestions", err);
@@ -95,6 +106,20 @@ const Home = () => {
     );
     setFare(response.data.fare);
   };
+
+  const createRide=async function(vehicleType){
+    const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`,{
+      pickup,
+      destination,
+      vehicleType
+    },{
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    console.log(response.data);
+  }
+
   useGSAP(
     function () {
       if (panelOpen) {
@@ -242,7 +267,7 @@ const Home = () => {
             />
             <button
               ref={tripButtonRef}
-              className="flex w-full items-center justify-center bg-black text-white hidden py-2 rounded-lg text-lg font-medium mb-3 mt-3"
+              className="flex w-full items-center justify-center bg-black text-white py-2 rounded-lg text-lg font-medium mb-3 mt-3"
               onClick={(e) => {
                 findTrip(e);
               }}
@@ -250,7 +275,7 @@ const Home = () => {
               Find Trip
             </button>
           </form>
-        </div>
+        </div> 
         <div ref={panelRef} className="bg-white h-0 ">
           <LocationSearchPanel
             vehiclePanelOpen={vehiclePanelOpen}
@@ -269,7 +294,7 @@ const Home = () => {
       </div>
       <div
         ref={vehiclePanelRef}
-        className="fixed z-10 bottom-0 translate-y-full bg-white px-3 py-8 w-full "
+        className="fixed  z-1 bottom-0 translate-y-full bg-white px-3 py-8 w-full "
       >
         <VehiclePanel
           setVehicle={setVehicle}
@@ -280,7 +305,7 @@ const Home = () => {
       </div>
       <div
         ref={confirmVehicleRef}
-        className="fixed z-10 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
+        className="fixed  z-1 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
       >
         <ConfirmVehicle
           vehicle={vehicle}
@@ -289,11 +314,12 @@ const Home = () => {
           fare={fare}
           setConfirmVehiclePanelOpen={setConfirmVehiclePanelOpen}
           setLookingforDriverPanelOpen={setLookingforDriverPanelOpen}
+          createRide={createRide}
         />
       </div>
       <div
         ref={lookingForDriverRef}
-        className="fixed z-10 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
+        className="fixed  z-0 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
       >
         <LookingForDriver
           vehicle={vehicle}
@@ -305,7 +331,7 @@ const Home = () => {
       </div>
       <div
         ref={waitingForDriverRef}
-        className="fixed z-10 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
+        className="fixed  z-1 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
       >
         <WaitingForDriver setWaitingForDriver={setWaitingForDriver} />
       </div>

@@ -52,6 +52,7 @@ const ConfirmVehicle = (props) => {
           onClick={() => {
             props.setLookingforDriverPanelOpen(true);
             props.setConfirmVehiclePanelOpen(false);
+            props.createRide(`${props.vehicle.type}`)
           }}
           className="w-full bg-green-600 text-white p-3 text-xl font-medium mt-3 rounded-lg"
         >

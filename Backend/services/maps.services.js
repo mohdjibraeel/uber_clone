@@ -1,4 +1,5 @@
 const axios = require("axios");
+const Captain = require("../models/captain");
 
 module.exports.getAddressCoordinate = async (address) => {
   if (!address || typeof address !== "string") {
@@ -20,7 +21,7 @@ module.exports.getAddressCoordinate = async (address) => {
       );
     }
     const loc = data.results[0].geometry.location;
-    return { ltd: loc.lat, lang: loc.lng };
+    return { ltd: loc.lat, lng: loc.lng };
   } catch (err) {
     throw new Error(
       `Failed to get coordinates for address "${address}": ${err.message}`,
@@ -55,19 +56,42 @@ exports.getAutoSuggestions = async (input) => {
   if (!input) {
     throw new Error("query is Required");
   }
-  const apiKey=process.env.GOOGLE_MAPS_API;
-  const url =`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${apiKey}`;
+  const apiKey = process.env.GOOGLE_MAPS_API;
+  const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${apiKey}`;
 
-  try{
-    const response=await axios.get(url);
-    if(response.data.status=='OK'){
+  try {
+    const response = await axios.get(url);
+    if (response.data.status == "OK") {
       return response.data.predictions;
-    }else{
-      throw new Error('Unable to fetch suggestions');
+    } else {
+      throw new Error("Unable to fetch suggestions");
     }
-  }catch(err){
+  } catch (err) {
     console.log(err);
     throw err;
   }
+};
 
+module.exports.getCaptainsInRadius = async (ltd, lng, radiusKm) => {
+  if (ltd == null || lng == null || radiusKm == null) {
+    throw new Error("Latitude, longitude, and radius are required");
+  }
+
+  try {
+    const captains = await Captain.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [lng, ltd], // ✅ ALWAYS [lng, lat]
+          },
+          $maxDistance: radiusKm * 1000, // km → meters
+        },
+      },
+    });
+
+    return captains;
+  } catch (err) {
+    throw new Error(`Failed to fetch captains in radius: ${err.message}`);
+  }
 };
