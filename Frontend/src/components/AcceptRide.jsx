@@ -5,7 +5,6 @@ const AcceptRide = (props) => {
     const remaining = str?.slice(index + 1).trim();
     return [firstWord, remaining];
   };
-  console.log(props.ride);
   return (
     <>
       <h2
@@ -91,8 +90,7 @@ const AcceptRide = (props) => {
         </button>
         <button
           onClick={() => {
-            props.setConfirmRidePanel(true);
-            props.setAcceptRidePanel(false);
+            props.acceptRide()
           }}
           className=" bg-green-600 text-white p-2 px-14 text-lg font-medium mt-3 rounded-lg"
         >

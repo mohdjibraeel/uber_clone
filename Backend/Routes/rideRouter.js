@@ -19,6 +19,12 @@ rideRouter.get('/get-fare',
   rideController.getFare
 )
 
+rideRouter.post('/accept',
+  authMiddleware.authCaptain,
+  body('rideId').isMongoId().withMessage('Invalid Ride Id'),
+  rideController.acceptRide
+)
+
 
 
 

@@ -1,13 +1,14 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import CaptainDetails from "../components/CaptainDetails";
 import AcceptRide from "../components/AcceptRide";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfirmRide from "../components/ConfirmRide";
 import { useContext } from "react";
-import CaptainContext, { CaptainDataContext } from "../context/CaptainContext";
+import { CaptainDataContext } from "../context/CaptainContext";
 import SocketContext from "../context/SocketContext";
 import { useEffect } from "react";
+import axios from "axios";
 
 const CaptainHome = () => {
   const [acceptRidePanel, setAcceptRidePanel] = useState(false);
@@ -25,7 +26,7 @@ const CaptainHome = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           socket.emit("update-location-captain", {
-            userId:CaptainData._id,
+            userId: CaptainData._id,
             location: {
               ltd: position.coords.latitude,
               lng: position.coords.longitude,
@@ -34,14 +35,35 @@ const CaptainHome = () => {
         });
       }
     };
-    const locationInterval=setInterval(updateLocation,10000)
+    const locationInterval = setInterval(updateLocation, 10000);
     updateLocation();
   }, [CaptainData]);
 
-  socket.on('new-ride',(data)=>{
-    setRide(data)
+  socket.on("new-ride", (data) => {
+    setRide(data);
     setAcceptRidePanel(true);
-  })
+  });
+
+  async function acceptRide() {
+    try{
+      const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/accept`,
+      {
+        rideId: ride._id,
+        captainId: CaptainData._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      },
+    );
+    }catch(err){
+      console.log(err)
+    }
+    setAcceptRidePanel(false);
+    setConfirmRidePanel(true);
+  }
 
   useGSAP(
     function () {
@@ -95,15 +117,15 @@ const CaptainHome = () => {
       >
         <AcceptRide
           ride={ride}
+          acceptRide={acceptRide}
           setAcceptRidePanel={setAcceptRidePanel}
-          setConfirmRidePanel={setConfirmRidePanel}
         />
       </div>
       <div
         ref={confirmRidePanelRef}
         className="fixed z-10 bottom-0 translate-y-full h-screen bg-white px-3 py-8 w-full"
       >
-        <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} />
+        <ConfirmRide ride={ride} setConfirmRidePanel={setConfirmRidePanel} />
       </div>
     </div>
   );
