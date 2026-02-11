@@ -11,6 +11,7 @@ import { SocketContext } from "../context/SocketContext";
 import axios from "axios";
 import { useEffect } from "react";
 import { UserDataContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -34,6 +35,7 @@ const Home = () => {
   const [destinationSuggestions, setdestinationSuggestions] = useState("");
   const [fare, setFare] = useState({ car: null, auto: null, moto: null });
   const [ride, setRide] = useState("");
+  const navigate= useNavigate()
 
   const { socket } = useContext(SocketContext);
   const { userData } = useContext(UserDataContext);
@@ -48,6 +50,10 @@ const Home = () => {
     setLookingforDriverPanelOpen(false);
   });
 
+  socket.on('ride-started',(ride)=>{
+    setWaitingForDriver(false);
+    navigate('/riding');
+  })
   const submitHandler = (e) => {
     e.preventDefault();
   };

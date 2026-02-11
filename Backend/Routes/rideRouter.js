@@ -25,6 +25,13 @@ rideRouter.post('/accept',
   rideController.acceptRide
 )
 
+rideRouter.get('/start-ride',
+  authMiddleware.authCaptain,
+  query('rideId').isMongoId().withMessage('Invalid Ride Id'),
+  query('otp').isString().isLength({min:6,max:6}).withMessage('Invalid otp'),
+  rideController.startRide
+)
+
 
 
 

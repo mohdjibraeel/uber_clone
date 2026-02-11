@@ -1,10 +1,29 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import  { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ConfirmRide = (props) => {
   const [otp, setOtp] = useState("");
-  const submitHandler = (e) => {
+  const navigate=useNavigate()
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/rides/start-ride`,
+      {
+        params: {
+          rideId: props.ride._id,
+          otp: otp,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      },
+    );
+    if(response.status===200){
+      props.setConfirmRidePanel(false);
+      navigate('/captain-riding')
+    }
   };
   const nameSetter = (str) => {
     const index = str?.indexOf(",");
@@ -108,13 +127,9 @@ const ConfirmRide = (props) => {
               }}
               className="rounded border font-mono border-gray-300 w-full p-2 px-3 bg-[#f3f3f6] "
             />
-            <Link
-              to="/captain-riding"
-              onClick={() => {}}
-              className=" bg-green-600 w-full block text-center text-white p-3 px-14 text-xl font-medium mt-3 rounded-lg"
-            >
+            <button className=" bg-green-600 w-full block text-center text-white p-3 px-14 text-xl font-medium mt-3 rounded-lg">
               Confirm
-            </Link>
+            </button>
             <button
               onClick={() => {
                 props.setConfirmRidePanel(false);

@@ -51,7 +51,7 @@ exports.acceptRide = async (req, res) => {
   }
   const { rideId } = req.body;
   try {
-    const ride = await rideService.acceptRide({rideId,captain:req.captain});
+    const ride = await rideService.acceptRide({ rideId, captain: req.captain });
     sendMessageToSocketId(ride.user.socketId, {
       event: "ride-accepted",
       data: ride,
@@ -60,5 +60,20 @@ exports.acceptRide = async (req, res) => {
   } catch (err) {
     console.log("Error with Captain accepting the ride", err);
     return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.startRide = async (req, res) => {
+  const errors=validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const {rideId,otp}=req.query;
+  try{
+    const ride=await rideService.startRide({rideId,otp,captain:req.captain});
+    return res.status(200).json(ride);
+  }catch(err){
+    console.log("error while Starting the ride",err);
+    return res.status(500).json({message:err.message})
   }
 };
