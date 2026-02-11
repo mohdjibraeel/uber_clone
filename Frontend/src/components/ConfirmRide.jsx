@@ -22,7 +22,7 @@ const ConfirmRide = (props) => {
     );
     if(response.status===200){
       props.setConfirmRidePanel(false);
-      navigate('/captain-riding')
+      navigate('/captain-riding',{state:{ride:props.ride}});
     }
   };
   const nameSetter = (str) => {

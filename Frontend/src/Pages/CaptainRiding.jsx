@@ -1,12 +1,15 @@
 import { ArrowRight } from "lucide-react";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import FinishRide from "../components/FinishRide";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useLocation } from "react-router-dom";
 
 const CaptainRiding = () => {
   const [finishRide, setFinishRide] = useState(false);
   const finishRideRef = useRef(null);
+  const location=useLocation();
+  const ride=location.state?.ride;
 
   useGSAP(function () {
     if (finishRide) {
@@ -48,7 +51,7 @@ const CaptainRiding = () => {
           <i className="text-2xl font-semibold ri-arrow-up-wide-line"></i>
         </h2>
         <div className="flex justify-between items-center mt-3">
-          <h2 className="text-xl font-semibold">4 KM Away</h2>
+          <h2 className="text-xl font-semibold">Click to Finish</h2>
           <button className=" bg-green-600 text-white p-3 px-8 text-lg font-medium rounded-lg">
             Complete Ride
           </button>
@@ -58,7 +61,7 @@ const CaptainRiding = () => {
         ref={finishRideRef}
         className="fixed z-10 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
       >
-        <FinishRide  setFinishRide={setFinishRide}/>
+        <FinishRide ride={ride} setFinishRide={setFinishRide}/>
       </div>
     </div>
   );

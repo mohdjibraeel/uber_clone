@@ -1,7 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import SocketContext from "../context/SocketContext";
 
 const UserRiding = () => {
+  const nameSetter = (str) => {
+    const index = str?.indexOf(",");
+    const firstWord = str?.slice(0, index);
+    const remaining = str?.slice(index + 1).trim();
+    return [firstWord, remaining];
+  };
+  const location = useLocation();
+  const ride = location.state?.ride;
+
+  const { socket } = useContext(SocketContext);
+  const navigate = useNavigate();
+
+  socket.on("ride-ended", () => {
+    navigate("/home");
+  });
+
   return (
     <div className="h-screen relative">
       <Link to="/home">
@@ -32,9 +49,14 @@ const UserRiding = () => {
             alt=""
           />
           <div className="text-right">
-            <h2 className="font-medium">Captain</h2>
-            <h3 className="font-bold">RJ 04 SE 8277</h3>
-            <p className="text-sm text-gray-600">Car Model</p>
+            <h2 className="font-medium">
+              {ride?.captain.fullname.firstname}{" "}
+              {ride?.captain.fullname.lastname}
+            </h2>
+            <h3 className="font-bold">{ride?.captain.vehicle.plate}</h3>
+            <p className="text-sm text-gray-600">
+              {ride?.captain.vehicle.color} {ride?.captain.vehicle.vehicleType}
+            </p>
           </div>
         </div>
         <div className="w-full flex gap-3 items-center py-3 px-2 border-b">
@@ -42,8 +64,12 @@ const UserRiding = () => {
             <i className="text-2xl ri-map-pin-fill"></i>
           </div>
           <div>
-            <h3 className="font-medium text-lg">H14/64-D</h3>
-            <p className="text-sm text-gray-700">MNIT Jaipur</p>
+            <h3 className="font-medium text-lg">
+              {nameSetter(ride?.destination)[0]}
+            </h3>
+            <p className="text-sm text-gray-700">
+              {nameSetter(ride?.destination)[1]}
+            </p>
           </div>
         </div>
         <div className="w-full flex gap-3 items-center py-3 px-2">
@@ -51,7 +77,7 @@ const UserRiding = () => {
             <i className="text-2xl ri-cash-line"></i>
           </div>
           <div>
-            <h3 className="font-medium text-lg">₹ 193.20</h3>
+            <h3 className="font-medium text-lg">₹ {ride?.fare}</h3>
             <p className="text-sm text-gray-700">Payment Cash</p>
           </div>
         </div>
