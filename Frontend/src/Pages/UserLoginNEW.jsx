@@ -6,6 +6,8 @@ import axios from "axios";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   // const [userData, setUserData] = useState({});
 
   const {userData,setUserData}=useContext(UserDataContext);
@@ -13,23 +15,40 @@ const UserLogin = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
     // setUserData({ email, password });
     const user={
       email: email,
       password: password
     }
-    const response= await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,user);
 
-    if(response.status===200){
-      const data=response.data;
-      setUserData(data.user);
-      localStorage.setItem("token",data.token);
-      navigate('/home');
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, user);
 
+      if (response.status === 200) {
+        const data = response.data;
+        setUserData(data.user);
+        localStorage.setItem("token", data.token);
+        navigate('/home');
+      }
+
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      console.error("Login failed:", err);
+      if (err.response) {
+        // Server responded with an error status (wrong credentials, validation, etc.)
+        setError(err.response.data?.message || "Invalid email or password.");
+      } else if (err.request) {
+        // Request was made but no response came back (backend unreachable, CORS, wrong URL, etc.)
+        setError("Could not reach the server. Please check your connection and try again.");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setEmail("");
-    setPassword(""); 
   };
 
   return (
@@ -61,11 +80,15 @@ const UserLogin = () => {
             type="password"
             placeholder="Password"
           />
+          {error && (
+            <p className="text-red-600 text-sm mb-3">{error}</p>
+          )}
           <button
-            className="flex w-full items-center justify-center bg-black text-white px-4 py-2 rounded text-lg font-medium mb-3"
+            className="flex w-full items-center justify-center bg-black text-white px-4 py-2 rounded text-lg font-medium mb-3 disabled:opacity-50"
             type="submit"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="text-center">New User? <Link to="/register" className="text-[#2f73f2]">Create an account</Link> </p>
