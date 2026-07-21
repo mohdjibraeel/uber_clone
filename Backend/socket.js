@@ -6,7 +6,7 @@ let io;
 exports.initializeSocket = (server) => {
   io = socketIo(server, {
     cors: {
-      origin: "*",
+      origin: process.env.FRONTEND_URL || "http://localhost:5173",
       methods: ["GET", "POST"],
     },
   });
@@ -54,3 +54,4 @@ exports.sendMessageToSocketId = (socketId, messageObject) => {
     console.log("Socket.io is Not intialized");
   }
 };
+  
