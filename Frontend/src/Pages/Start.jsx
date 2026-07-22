@@ -7,12 +7,12 @@ const Start = () => {
       <div className="h-screen py-4 px-5 bg-[#2f73f2] flex flex-col items-center justify-between ">
         <div className="text-center items-center flex flex-col mt-9">
           <img
-            className="h-20 "
+            className="h-20"
             src="https://media.ffycdn.net/us/postmates/eyJwYXRoIjoicG9zdG1hdGVzXC9hY2NvdW50c1wvODRcLzQwMDA1MTRcL3Byb2plY3RzXC8yN1wvYXNzZXRzXC8xN1wvNTUxMFwvMmM3MTkyZDM1NGQ0YjA2YWFhZTgzZDc5Yzc2MzYwNWMtMTYyMDM3Nzc0OC5haSJ9:postmates:cvkkT2vHrzRiGiujqpqbVFn9z8dn773yTgVOCePXowk?width=2400"
             alt="logo"
           />
           <img
-            className=" mt-4"
+            className="h-45 w-auto"
             src="https://images.icon-icons.com/2556/PNG/512/security_guard_shield_icon_153085.png"
             alt="Safety"
           />
