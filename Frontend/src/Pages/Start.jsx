@@ -13,7 +13,7 @@ const Start = () => {
           />
           <img
             className=" mt-4"
-            src="https://blog.uber-cdn.com/cdn-cgi/image/width=1024,quality=80,onerror=redirect,format=auto/wp-content/uploads/2020/05/Driver_Rider_Mask.png"
+            src="https://images.icon-icons.com/2556/PNG/512/security_guard_shield_icon_153085.png"
             alt="Safety"
           />
           <h1 className="text-white text-[35px] font-semibold mt-1">
