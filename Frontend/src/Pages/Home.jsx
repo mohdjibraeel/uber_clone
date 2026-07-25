@@ -225,38 +225,38 @@ const Home = () => {
   );
 
   return (
-    <div className=" h-screen relative  overflow-hidden">
+    <div className="h-screen w-screen relative overflow-hidden">
       <img
-        className="w-20 absolute top-2 left-2"
+        className="w-16 sm:w-20 md:w-24 absolute top-2 left-2 sm:top-4 sm:left-4 z-0"
         src="https://www.logo.wine/a/logo/Uber/Uber-Logo.wine.svg"
         alt=""
       />
 
       <div className="h-screen w-screen">
         <img
-          className="h-full object-cover"
+          className="h-full w-full object-cover"
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
           alt=""
         />
       </div>
-      <div className=" flex flex-col absolute justify-end h-screen bottom-0 w-full">
-        <div className="h-[30%] p-5 bg-white relative">
+      <div className="flex flex-col absolute inset-x-0 mx-auto justify-end h-screen bottom-0 w-full max-w-md md:max-w-lg lg:max-w-xl">
+        <div className="h-[35%] sm:h-[30%] p-4 sm:p-5 bg-white relative rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
           <h2
             ref={panelCloseRef}
             onClick={() => setPanelOpen(!panelOpen)}
-            className="absolute right-5.5 "
+            className="absolute right-5 sm:right-5.5 top-4"
           >
             <i className="text-2xl font-bold ri-arrow-down-wide-line"></i>
           </h2>
-          <h3 className="text-2xl font-semibold">Find a trip </h3>
+          <h3 className="text-xl sm:text-2xl font-semibold">Find a trip </h3>
           <form
             onSubmit={(e) => {
               submitHandler(e);
             }}
           >
-            <div className="line h-15 w-1 absolute top-[44%] left-[10%] bg-black rounded-full "></div>
+            <div className="line h-[60px] w-1 absolute top-[44%] left-[10%] bg-black rounded-full "></div>
             <input
-              className="bg-[#eee] px-12 py-2 text-base rounded-lg w-full mt-5"
+              className="bg-[#eee] px-12 py-3 text-base rounded-lg w-full mt-4 sm:mt-5 focus:outline-none focus:ring-2 focus:ring-[#2f73f2]"
               type="text"
               value={pickup}
               onChange={(e) => {
@@ -269,7 +269,7 @@ const Home = () => {
               placeholder="Add a pick up location"
             />
             <input
-              className="bg-[#eee] px-12 py-2 text-base rounded-lg w-full mt-3"
+              className="bg-[#eee] px-12 py-3 text-base rounded-lg w-full mt-3 focus:outline-none focus:ring-2 focus:ring-[#2f73f2]"
               type="text"
               value={destination}
               onClick={() => {
@@ -281,7 +281,7 @@ const Home = () => {
             />
             <button
               ref={tripButtonRef}
-              className="flex w-full items-center justify-center bg-black text-white py-2 rounded-lg text-lg font-medium mb-3 mt-3"
+              className="flex w-full items-center justify-center bg-black text-white py-3 rounded-lg text-base sm:text-lg font-medium mb-3 mt-3 active:scale-95 transition-transform"
               onClick={(e) => {
                 findTrip(e);
               }}
@@ -290,7 +290,7 @@ const Home = () => {
             </button>
           </form>
         </div>
-        <div ref={panelRef} className="bg-white h-0 ">
+        <div ref={panelRef} className="bg-white h-0 overflow-y-auto">
           <LocationSearchPanel
             vehiclePanelOpen={vehiclePanelOpen}
             setVehiclePanelOpen={setVehiclePanelOpen}
@@ -308,7 +308,7 @@ const Home = () => {
       </div>
       <div
         ref={vehiclePanelRef}
-        className="fixed  z-3 bottom-0 translate-y-full bg-white px-3 py-8 w-full "
+        className="fixed inset-x-0 mx-auto z-3 bottom-0 translate-y-full bg-white px-3 py-8 w-full max-w-md md:max-w-lg lg:max-w-xl rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]"
       >
         <VehiclePanel
           setVehicle={setVehicle}
@@ -319,7 +319,7 @@ const Home = () => {
       </div>
       <div
         ref={confirmVehicleRef}
-        className="fixed  z-2 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
+        className="fixed inset-x-0 mx-auto z-2 bottom-0 translate-y-full bg-white px-3 py-8 w-full max-w-md md:max-w-lg lg:max-w-xl rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]"
       >
         <ConfirmVehicle
           vehicle={vehicle}
@@ -333,7 +333,7 @@ const Home = () => {
       </div>
       <div
         ref={lookingForDriverRef}
-        className="fixed  z-1 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
+        className="fixed inset-x-0 mx-auto z-1 bottom-0 translate-y-full bg-white px-3 py-8 w-full max-w-md md:max-w-lg lg:max-w-xl rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]"
       >
         <LookingForDriver
           vehicle={vehicle}
@@ -345,7 +345,7 @@ const Home = () => {
       </div>
       <div
         ref={waitingForDriverRef}
-        className="fixed  z-0 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
+        className="fixed inset-x-0 mx-auto z-0 bottom-0 translate-y-full bg-white px-3 py-8 w-full max-w-md md:max-w-lg lg:max-w-xl rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]"
       >
         <WaitingForDriver ride={ride} setWaitingForDriver={setWaitingForDriver} />
       </div>
