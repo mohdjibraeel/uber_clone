@@ -94,9 +94,9 @@ const CaptainHome = () => {
     [confirmRidePanel],
   );
   return (
-    <div className=" h-screen relative  overflow-hidden">
+    <div className="h-screen relative overflow-hidden">
       <img
-        className="w-20 absolute top-2 left-2"
+        className="w-16 sm:w-20 md:w-24 absolute top-2 left-2 sm:top-4 sm:left-4 z-10"
         src="https://www.logo.wine/a/logo/Uber/Uber-Logo.wine.svg"
         alt=""
       />
@@ -108,12 +108,12 @@ const CaptainHome = () => {
           alt=""
         />
       </div>
-      <div className="h-2/5 p-5">
+      <div className="h-2/5 p-4 sm:p-5">
         <CaptainDetails />
       </div>
       <div
         ref={acceptRidePanelRef}
-        className="fixed z-10 bottom-0 translate-y-full bg-white px-3 py-8 w-full"
+        className="fixed inset-x-0 mx-auto z-10 bottom-0 translate-y-full bg-white px-3 py-8 w-full max-w-md md:max-w-lg lg:max-w-xl rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]"
       >
         <AcceptRide
           ride={ride}
@@ -123,7 +123,7 @@ const CaptainHome = () => {
       </div>
       <div
         ref={confirmRidePanelRef}
-        className="fixed z-10 bottom-0 translate-y-full h-screen bg-white px-3 py-8 w-full"
+        className="fixed inset-x-0 mx-auto z-10 bottom-0 translate-y-full h-screen bg-white px-3 py-8 w-full max-w-md md:max-w-lg lg:max-w-xl"
       >
         <ConfirmRide ride={ride} setConfirmRidePanel={setConfirmRidePanel} />
       </div>

@@ -25,17 +25,15 @@ const CaptainLogin = () => {
   };
 
   return (
-    <div className="p-7 h-screen flex flex-col justify-between">
-      <div>
-        <div className="flex">
+    <div className="min-h-screen w-full flex flex-col justify-between p-5 sm:p-8 md:p-10">
+      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
+        <div className="flex items-center gap-2 mb-6 sm:mb-8">
           <img
-            className="h-15 translate-x-[-10%] mb-7"
+            className="h-8 sm:h-10 md:h-12"
             src="https://www.logo.wine/a/logo/Uber/Uber-Logo.wine.svg"
             alt="logo"
           />
-          <div className="translate-x-[-60%] translate-y-[20%]">
-            <ArrowRight size={28} strokeWidth={2.7} />
-          </div>
+          <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.7} />
         </div>
         <form
           action=""
@@ -43,10 +41,10 @@ const CaptainLogin = () => {
             submitHandler(e);
           }}
         >
-          <h3 className="text-lg mb-2">What's our captain's email?</h3>
+          <h3 className="text-base sm:text-lg mb-2">What's our captain's email?</h3>
           <input
             required
-            className="rounded border border-gray-300 w-full p-2 px-3 bg-[#f3f3f6] mb-4"
+            className="rounded border border-gray-300 w-full p-3 px-3 text-base bg-[#f3f3f6] mb-4 focus:outline-none focus:ring-2 focus:ring-[#2f73f2]"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -54,33 +52,33 @@ const CaptainLogin = () => {
             type="email"
             placeholder="Example@email.com"
           />
-          <h3 className="text-lg mb-2">Enter password</h3>
+          <h3 className="text-base sm:text-lg mb-2">Enter password</h3>
           <input
             required
-            className="rounded border border-gray-300 w-full p-2 px-3 bg-[#f3f3f6] mb-7"
+            className="rounded border border-gray-300 w-full p-3 px-3 text-base bg-[#f3f3f6] mb-6 sm:mb-7 focus:outline-none focus:ring-2 focus:ring-[#2f73f2]"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
           />
           <button
-            className="flex w-full items-center justify-center bg-black text-white px-4 py-2 rounded text-lg font-medium mb-3"
+            className="flex w-full items-center justify-center bg-black text-white px-4 py-3 rounded-lg text-base sm:text-lg font-medium mb-3 active:scale-95 transition-transform"
             type="submit"
           >
             Login
           </button>
         </form>
-        <p className="text-center">
+        <p className="text-center text-sm sm:text-base">
           New join as Captain?{" "}
           <Link to="/captain-register" className="text-[#2f73f2]">
             Register
           </Link>{" "}
         </p>
       </div>
-      <div>
+      <div className="w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
         <Link
           to="/login"
-          className="flex w-full items-center justify-center bg-black text-white px-4 py-2 rounded text-lg font-medium mb-4"
+          className="flex w-full items-center justify-center bg-black text-white px-4 py-3 rounded-lg text-base sm:text-lg font-medium mb-2 sm:mb-4 active:scale-95 transition-transform"
         >
           Sign in as User
         </Link>
