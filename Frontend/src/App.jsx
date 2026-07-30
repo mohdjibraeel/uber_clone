@@ -18,27 +18,13 @@ const App = () => {
     <div>
       <Routes>
         <Route path="/" element={<Start />} />
-        <Route
-          path="/home"
-          element={
-            <UserProtectWrapper>
-              <Home />
-            </UserProtectWrapper>
-          }
-        />
+        <Route path="/home" element={<UserProtectWrapper><Home /></UserProtectWrapper>}/>
         <Route path="/login" element={<UserLogin />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/captain-login" element={<CaptainLogin />} />
         <Route path="/captain-register" element={<CaptainRegister />} />
         <Route path="/user/logout" element={<UserLogout />} />
-        <Route
-          path="/captain-home"
-          element={
-            <CapatinProtectWrapper>
-              <CaptainHome />
-            </CapatinProtectWrapper>
-          }
-        />
+        <Route path="/captain-home" element={<CapatinProtectWrapper><CaptainHome /></CapatinProtectWrapper>}/>
         <Route path="/riding" element={<UserRiding/>}/>
         <Route path="/captain-riding" element={<CaptainRiding/>}></Route>
       </Routes>
