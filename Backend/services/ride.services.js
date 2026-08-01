@@ -62,7 +62,7 @@ exports.createRide = async ({ user, pickup, destination, vehicleType }) => {
   const duration = distanceTime.duration.value / 60;
   const fare = await getFare(pickup, destination);
 
-  const ride = Ride.create({
+  const ride = await Ride.create({
     user,
     pickup,
     destination,

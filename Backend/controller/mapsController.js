@@ -13,7 +13,9 @@ exports.getCoordinates = async (req, res, next) => {
     res.status(200).json(coordinates);
   } catch (error) {
     console.log(error);
-    res.status(404).json({ message: "Coordinate not found" }, { error: error });
+    res.status(404).json({ message: "Coordinate not found" }, { error: error});
+    
+
   }
 };
 
