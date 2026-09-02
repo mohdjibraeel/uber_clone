@@ -35,10 +35,27 @@ const Home = () => {
   const [destinationSuggestions, setdestinationSuggestions] = useState("");
   const [fare, setFare] = useState({ car: null, auto: null, moto: null });
   const [ride, setRide] = useState("");
-  const navigate= useNavigate()
+  const navigate = useNavigate();
 
   const { socket } = useContext(SocketContext);
   const { userData } = useContext(UserDataContext);
+  const [currentCoords, setCurrentCoords] = useState(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentCoords({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (err) => {
+          console.log("Location permission denied or unavailable", err);
+        },
+      );
+    }
+  }, []);
 
   useEffect(() => {
     socket.emit("join", { userType: "user", userId: userData._id });
@@ -50,11 +67,10 @@ const Home = () => {
     setLookingforDriverPanelOpen(false);
   });
 
-  socket.on('ride-started',(ride)=>{
+  socket.on("ride-started", (ride) => {
     setWaitingForDriver(false);
-    navigate('/riding',{state:{ride:ride}});
-
-  })
+    navigate("/riding", { state: { ride: ride } });
+  });
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -100,6 +116,38 @@ const Home = () => {
       setdestinationSuggestions(response.data);
     } catch (err) {
       console.log("Error while finding suggestions", err);
+    }
+  };
+
+  const useCurrentLocation = async () => {
+    try {
+      let coords = currentCoords;
+      if (!coords) {
+        coords = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            (position) =>
+              resolve({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              }),
+            reject,
+          );
+        });
+        setCurrentCoords(coords);
+      }
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/maps/get-address`,
+        {
+          params: { lat: coords.lat, lng: coords.lng },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        },
+      );
+
+      setPickup(response.data.address);
+      setPanelOpen(false);
+    } catch (err) {
+      console.log("Error fetching current location address", err);
     }
   };
 
@@ -298,6 +346,7 @@ const Home = () => {
             setPickup={setPickup}
             setDestination={setDestination}
             activeField={activeField}
+            getCurrentLocation={useCurrentLocation}
             suggestions={
               activeField === "pickup"
                 ? pickUpSuggestions
@@ -347,7 +396,10 @@ const Home = () => {
         ref={waitingForDriverRef}
         className="fixed inset-x-0 mx-auto z-0 bottom-0 translate-y-full bg-white px-3 py-8 w-full max-w-md md:max-w-lg lg:max-w-xl rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]"
       >
-        <WaitingForDriver ride={ride} setWaitingForDriver={setWaitingForDriver} />
+        <WaitingForDriver
+          ride={ride}
+          setWaitingForDriver={setWaitingForDriver}
+        />
       </div>
     </div>
   );
