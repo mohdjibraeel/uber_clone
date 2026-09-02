@@ -2,7 +2,8 @@ const axios = require("axios");
 const Captain = require("../models/captain");
 
 const LOCATIONIQ_KEY = () => process.env.LOCATIONIQ_API_KEY;
-const OSRM_BASE_URL = process.env.OSRM_BASE_URL || "https://router.project-osrm.org";
+const OSRM_BASE_URL =
+  process.env.OSRM_BASE_URL || "https://router.project-osrm.org";
 
 // ---- Geocoding (address -> coordinates) via LocationIQ ----
 module.exports.getAddressCoordinate = async (address) => {
@@ -35,7 +36,44 @@ module.exports.getAddressCoordinate = async (address) => {
     return { ltd: parseFloat(loc.lat), lng: parseFloat(loc.lon) };
   } catch (err) {
     const msg = err.response?.data?.error || err.message;
-    throw new Error(`Failed to get coordinates for address "${address}": ${msg}`);
+    throw new Error(
+      `Failed to get coordinates for address "${address}": ${msg}`,
+    );
+  }
+};
+
+// ---- Reverse Geocoding (coordinates -> address) via LocationIQ ----
+module.exports.getAddressFromCoordinates = async (lat, lng) => {
+  if (lat == null || lng == null) {
+    throw new Error("Latitude and longitude are required");
+  }
+
+  const apiKey = LOCATIONIQ_KEY();
+  if (!apiKey) {
+    throw new Error("LocationIQ API key not set in environment variables");
+  }
+
+  const url = `https://us1.locationiq.com/v1/reverse`;
+
+  try {
+    const { data } = await axios.get(url, {
+      params: { key: apiKey, lat, lon: lng, format: "json" },
+    });
+
+    if (!data || !data.display_name) {
+      throw new Error("Reverse geocoding failed: no address found");
+    }
+
+    return {
+      address: data.display_name,
+      lat: parseFloat(data.lat),
+      lng: parseFloat(data.lon),
+    };
+  } catch (err) {
+    const msg = err.response?.data?.error || err.message;
+    throw new Error(
+      `Failed to get address for coordinates (${lat}, ${lng}): ${msg}`,
+    );
   }
 };
 
@@ -116,7 +154,9 @@ module.exports.getAutoSuggestions = async (input) => {
     }));
   } catch (err) {
     console.log(err);
-    throw new Error(`Unable to fetch suggestions: ${err.response?.data?.error || err.message}`);
+    throw new Error(
+      `Unable to fetch suggestions: ${err.response?.data?.error || err.message}`,
+    );
   }
 };
 

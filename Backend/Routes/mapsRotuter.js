@@ -13,5 +13,8 @@ mapsRouter.get('/get-distance-time',query('origin').isString().isLength({min:3})
 
 mapsRouter.get('/get-suggestion',query('input').isString().isLength({min:3}),authMiddleware.authUser,mapsController.getAutoSuggestions)
 
+mapsRouter.get('/get-address',query('lat').isFloat(),query('lng').isFloat(),authMiddleware.authUser,mapsController.getAddressFromCoordinates
+);
+
 
 module.exports =mapsRouter;
